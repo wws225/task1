@@ -3,7 +3,7 @@ name: Firebase Deploy
 on:
   push:
     branches:
-      - main
+      - main  # mainブランチへのpush時にデプロイを実行
 
 jobs:
   deploy:
@@ -16,10 +16,13 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 18
+        node-version: 18  # 必要に応じてバージョンを変更
 
     - name: Install dependencies
       run: npm install
+
+    - name: Install Firebase CLI
+      run: npm install -g firebase-tools  # Firebase CLIのインストール
 
     - name: Build project
       run: npm run build
