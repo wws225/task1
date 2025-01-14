@@ -7,7 +7,7 @@ import { RegisterButton } from './components/area/RegisterButton';
 function App() {
   return (
     <InputProvider>
-       <h1>学習記録一覧</h1>
+       <h1 style={{color:"red"}}>学習記録一覧</h1>
     <InputArea />
     <TableView />
     <TotalTime />
