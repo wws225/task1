@@ -1,0 +1,33 @@
+name: CICD
+
+on:
+  push:
+    branches:
+      - main  # mainブランチへのpushをトリガーに設定
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18  # 必要に応じてバージョンを指定
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build  # 必要に応じてビルドコマンドを変更
+
+    - name: Deploy to Firebase
+      uses: w9jds/firebase-action@v5
+      with:
+        args: deploy
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
