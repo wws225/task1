@@ -1,6 +1,5 @@
 name: Firebase Deploy
 
-
 on:
   push:
   workflow_dispatch:
