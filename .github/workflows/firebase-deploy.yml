@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -20,11 +21,7 @@ jobs:
         run: npm install
       - name: Run build
         run: npm run build
-      - name: Check build output
-        run: ls -al dist
-      
-      - name: Deploy to Firebase Hosting
-        run: ./node_modules/.bin/firebase deploy --only hosting
+
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -47,8 +44,9 @@ jobs:
         run: |
           ./node_modules/.bin/firebase deploy --only hosting
         env:
+          FIREBASE_TOKEN: ${{ secrets.VITE_FIREBASE_TOKEN }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           FIREBASE_CLI_EXPERIMENTS: webframeworks
       - name: Cleanup Firebase Key
         run: rm $GOOGLE_APPLICATION_CREDENTIALS
