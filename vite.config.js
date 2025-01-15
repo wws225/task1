@@ -4,4 +4,7 @@ import env from "vite-plugin-env-compatible";
 
 export default defineConfig({
     plugins: [react(), env({ prefix: "VITE", mountedPath: "process.env" })],
+    build: {
+        outDir: 'dist', // 出力ディレクトリが 'dist' になっていることを確認
+      },
 });
