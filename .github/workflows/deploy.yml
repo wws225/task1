@@ -45,5 +45,6 @@ jobs:
          npx firebase-tools deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT_ID }}
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_KEY }}
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
