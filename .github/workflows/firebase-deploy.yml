@@ -1,42 +1,53 @@
-name: Firebase Deployment
+name: Scheduled deploy
 
 on:
   push:
-    branches:
-      - main  # main ブランチへのプッシュでデプロイをトリガー
-  workflow_dispatch:  # 手動でトリガー可能
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build and Deploy
+    name: build
     runs-on: ubuntu-latest
     steps:
-      # 1. コードをチェックアウト
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # 2. Node.js をセットアップ
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'  # 使用する Node.js のバージョンを指定
-
-      # 3. 依存関係をインストール
+          node-version: "18"
       - name: Install dependencies
         run: npm install
-
-      # 4. Vite を使用してビルド
-      - name: Build project
+      - name: Run build
         run: npm run build
 
-      # 5. Firebase CLI をインストール
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
-      # 6. Firebase の認証設定
-      - name: Authenticate with Firebase
-        run: echo "${{ secrets.FIREBASE_TOKEN }}" | firebase login --token
-
-      # 7. Firebase デプロイ
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Node.js and cache
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+          cache: "npm"
+      - name: Install firebase-tools
+        run: npm install --save-dev firebase-tools
+      - name: Decode Firebase service account key
+        run: |
+          echo "${{ secrets.FIREBASE_KEY }}" | base64 -d > ./firebase-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/firebase-key.json" >> $GITHUB_ENV
+      - name: Firebase project selection
+        run: ./node_modules/.bin/firebase use ${{ secrets.FIREBASE_PROJECT_ID }}
       - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          ./node_modules/.bin/firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      - name: Delete GOOGLE_APPLICATION_CREDENTIALS
+        run: rm $GOOGLE_APPLICATION_CREDENTIALS
+        if: ${{ always() }}
