@@ -40,20 +40,10 @@ jobs:
       - name: Install firebase-tools
         run: npm install --save-dev firebase-tools
 
-      - name: Decode Firebase service account key
-        run: |
-          echo "${{ secrets.FIREBASE_KEY }}" | base64 -d > $HOME/firebase-key.json
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase-key.json
-
       - name: Deploy to Firebase Hosting
         run: |
           ./node_modules/.bin/firebase deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT_ID }}
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase-key.json
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_KEY }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-
-      - name: Clean up service account key
-        run: rm $HOME/firebase-key.json
-        if: ${{ always() }}
