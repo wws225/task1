@@ -1,37 +1,42 @@
-name: Firebase Deploy
+name: Firebase Deployment
 
 on:
   push:
     branches:
-      - main # メインブランチにプッシュされたときにデプロイを実行
+      - main  # main ブランチへのプッシュでデプロイをトリガー
+  workflow_dispatch:  # 手動でトリガー可能
 
 jobs:
-  deploy:
+  build:
+    name: Build and Deploy
     runs-on: ubuntu-latest
-
     steps:
-      # リポジトリのクローン
+      # 1. コードをチェックアウト
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      # Node.js 環境のセットアップ
+      # 2. Node.js をセットアップ
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: '18' # 使用する Node.js のバージョン
+          node-version: '18'  # 使用する Node.js のバージョンを指定
 
-      # 依存関係のインストール
+      # 3. 依存関係をインストール
       - name: Install dependencies
         run: npm install
 
-      # Vite ビルドの実行（必要な場合）
+      # 4. Vite を使用してビルド
       - name: Build project
         run: npm run build
 
-      # Firebase デプロイの実行
+      # 5. Firebase CLI をインストール
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      # 6. Firebase の認証設定
+      - name: Authenticate with Firebase
+        run: echo "${{ secrets.FIREBASE_TOKEN }}" | firebase login --token
+
+      # 7. Firebase デプロイ
       - name: Deploy to Firebase Hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-        run: npm install -g firebase-tools && firebase deploy --only hosting
+        run: firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
