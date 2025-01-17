@@ -20,7 +20,6 @@ export const InsertRow = (props) => {
 }
 
 export const DeleteRow = (id) => {
-  console.log(id)
   const handleDelete = async () => {
     const { error } = await supabase
       .from('study-record')

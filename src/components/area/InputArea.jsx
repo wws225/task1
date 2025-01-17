@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import React , { useContext } from "react"
 import { InputInfo } from "./InputInfo"
 import { GlobalContext } from "../../providers/GlobalState"
 
@@ -15,6 +15,7 @@ export const InputArea = () => {
                 onChange={(e) => {
                     setTitle(e.target.value)
                 }}
+                id="title-input"
             />
             <InputRow
                 value={time}
@@ -24,6 +25,7 @@ export const InputArea = () => {
                 onChange={(e) => {
                     setTime(e.target.value)
                 }}
+                id="time-input"
             />
             <InputInfo />
         </>
@@ -32,13 +34,14 @@ export const InputArea = () => {
 
 
 const InputRow = (props) => {
-    const { value, label1, label2, inputType, onChange } = props;
+    const { value, label1, label2, inputType, onChange ,id} = props;
     return (
         <div>
             <label>{label1}</label>
             <input type={inputType}
                 value={value}
                 onChange={onChange}
+                data-testid={id}
             />
             <label>{label2}</label>
         </div>

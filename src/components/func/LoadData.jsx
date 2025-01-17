@@ -4,9 +4,11 @@ import { GlobalContext } from "../../providers/GlobalState";
 
 
 export const LoadData = () => {
-    const { reload, setData } = useContext(GlobalContext)
+    const { reload } = useContext(GlobalContext)
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true); // ローディング状態
+    const [data, setData] = useState([{ id:"",title: "", time: 0 }])
+   
     useEffect(() => {
         // テーブルの初期データを取得
 
@@ -19,7 +21,6 @@ export const LoadData = () => {
                 } else {
                     setData(initialData);
                 }
-                console.log(initialData)
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -29,7 +30,7 @@ export const LoadData = () => {
 
         fetchInitialData();
     }, [reload]);
-    return { loading, error };
+    return {data, loading, error };
 };
 
 export default LoadData;

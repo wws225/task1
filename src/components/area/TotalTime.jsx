@@ -1,8 +1,7 @@
-import { useContext, useMemo } from "react";
-import { GlobalContext } from "../../providers/GlobalState";
+import React, { useMemo } from "react";
 
-export const TotalTime = () => {
-  const { data } = useContext(GlobalContext);
+export const TotalTime = (props) => {
+  const [data] = props;
 
   // 合計時間を計算 (dataが存在する場合のみ)
   const totalTime = useMemo(() => {

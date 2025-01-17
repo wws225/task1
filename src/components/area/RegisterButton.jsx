@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React , { useContext, useState } from "react";
 import { GlobalContext } from "../../providers/GlobalState";
 import { InsertRow } from "../../utils/supabaseFunctions";
 
@@ -8,6 +8,7 @@ export const RegisterButton = () => {
     const { title, time, setTitle, setTime, setReload } = useContext(GlobalContext)
 
     const OnClick = async () => {
+        console.log(title)
         if (title === "" && time === 0) {
             setError("入力されていない項目があります。");
             return;
@@ -21,6 +22,7 @@ export const RegisterButton = () => {
     return (
         <>
             <button
+                data-testid="submit-button"
                 onClick={OnClick}>登録</button>
             <div>{error}</div>
         </>
