@@ -1,8 +1,7 @@
 import React, { useMemo } from "react";
 
 export const TotalTime = (props) => {
-  const [data] = props;
-
+  const {data} = props;
   // 合計時間を計算 (dataが存在する場合のみ)
   const totalTime = useMemo(() => {
     if (!data || data.length === 0) return 0; // tableが空の場合は0を返す

@@ -2,7 +2,6 @@ import React , { useContext, useState } from "react";
 import { GlobalContext } from "../../providers/GlobalState";
 import { InsertRow } from "../../utils/supabaseFunctions";
 
-
 export const RegisterButton = () => {
     const [error, setError] = useState("");
     const { title, time, setTitle, setTime, setReload } = useContext(GlobalContext)
@@ -24,7 +23,7 @@ export const RegisterButton = () => {
             <button
                 data-testid="submit-button"
                 onClick={OnClick}>登録</button>
-            <div>{error}</div>
+            <div data-testid="error">{error}</div>
         </>
     )
 }

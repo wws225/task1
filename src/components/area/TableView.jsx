@@ -14,16 +14,16 @@ export const TableView = () => {
 
   const { data,loading, error } = LoadData();
   if (error) return <p>エラー: {error}</p>;
-  if (loading) return <p>Loading・・・</p>
+  if (loading) return <p data-testid="load">Loading・・・</p>
   return (
-    <>
+    <ol data-testid="table"     >
       {data.map((item, index) => (
-        <div key={index}>
+        <li key={index} data-testid="list-item">
           {item.title} {item.time}時間
-          <button onClick={() => onClick(item.id)}>削除</button>
-        </div>
+          <button data-testid={item.title} onClick={() => onClick(item.id)}>削除</button>
+        </li>
       ))}
     <TotalTime data={data}/>
-    </>
+    </ol>
   );
 };

@@ -32,7 +32,6 @@ export const InputArea = () => {
     )
 }
 
-
 const InputRow = (props) => {
     const { value, label1, label2, inputType, onChange ,id} = props;
     return (
