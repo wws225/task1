@@ -51,7 +51,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
+    needs: deploy
     steps:
       # リポジトリをチェックアウト
       - name: Checkout repository
