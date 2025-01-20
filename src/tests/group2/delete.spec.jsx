@@ -1,18 +1,7 @@
-import App from "../App";
+import App from "../../App";
 import React from "react";
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from "@testing-library/react";
-const fs = require('fs');
-const path = require('path');
-
-
-const statusFile = path.join(__dirname, 'status.json');
-
-beforeAll(() => {
-  // 確認ループで1つ目のテストの終了を待つ
-  while (!fs.existsSync(statusFile)) {}
-});
-
 
 test("削除ボタンを押すと学習記録が削除される",
   async () => {

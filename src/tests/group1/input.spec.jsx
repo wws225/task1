@@ -1,16 +1,7 @@
-import App from "../App";
+import App from "../../App";
 import React from "react";
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from "@testing-library/react";
-const fs = require('fs');
-const path = require('path');
-
-const statusFile = path.join(__dirname, 'status.json');
-
-afterAll(() => {
-  fs.writeFileSync(statusFile, JSON.stringify({ done: true }));
-});
-
 
 test("フォームに学習内容と時間を入力して登録ボタンを押すと新たに記録が追加されている",
   async () => {

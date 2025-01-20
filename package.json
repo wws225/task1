@@ -8,7 +8,11 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest",
+  "test:file1": "jest tests/group1", 
+  "test:file2": "jest tests/group2", 
+  "test:sequential": "npm run test:file1 && npm run test:file2"
+
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.47.12",
